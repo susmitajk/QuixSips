@@ -35,7 +35,7 @@ def wishlist(request):
     context = {
         'wishlist_items': wishlist_items,
     }
-    return render(request, 'wishlist/Wishlist.html', context)
+    return render(request, 'Wishlist/Wishlist.html', context)
 
 # Add to wishlist
 @csrf_exempt
