@@ -1,13 +1,21 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.template import TemplateDoesNotExist
 from wishlist.models import Wishlist, WishlistItem
 from store.models import ProductVariant
 from django.http import JsonResponse
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
 from cart.views import add_to_cart as cart_add_to_cart
-
+from django.template.loader import get_template
 # Display wishlist
 def wishlist(request):
+    # Check if the template can be loaded
+    try:
+        get_template('Wishlist/Wishlist.html')
+        print("Template found!")
+    except TemplateDoesNotExist:
+        print("Template not found!")
+        
     if request.method == 'POST':
         variant_id = request.POST.get('variant_id')
         action = request.POST.get('action')
