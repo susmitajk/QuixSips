@@ -153,7 +153,7 @@ def place_order(request):
                             user=request.user,
                             total_price=total_price_usd,  # Store total price in USD
                             payment_method=payment_method,
-                            status='Pending',
+                            status='Confirmed',
                             coupon_code=cart.coupon_code if cart.coupon_code else '',
                             discount_percentage=discount_percentage,
                             address_line_1=address.address_line_1,
@@ -201,7 +201,7 @@ def place_order(request):
                         user=request.user,
                         total_price=total_price_usd,  # Store total price in USD
                         payment_method=payment_method,
-                        status='Pending',
+                        status='Confirmed',
                         coupon_code=cart.coupon_code if cart.coupon_code else '',
                         discount_percentage=discount_percentage,
                         address_line_1=address.address_line_1,
