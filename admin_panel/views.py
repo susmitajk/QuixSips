@@ -17,6 +17,7 @@ from store.models import Product, ProductImage,ProductVariant
 from django.utils import timezone
 from datetime import timedelta,datetime
 import logging
+from django.contrib.auth.decorators import login_required, user_passes_test
 
 
 
@@ -71,6 +72,12 @@ def filter_sales_data(period):
 
     return sales_dates, sales_totals
 
+# Define the admin check function
+def admin_required(user):
+    return user.is_authenticated and user.is_staff
+
+# Admin dashboard view with the admin check decorator
+@user_passes_test(admin_required)
 def DashboardView(request):
     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
         period = request.GET.get('period', 'daily')
