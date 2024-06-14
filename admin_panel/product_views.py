@@ -1,10 +1,15 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from store.models import Brand, Type, Product, ProductVariant,ProductImage
 from .forms import BrandForm,TypeForm,ProductForm, ProductVariantForm,ProductImageForm
-
+from django.contrib.auth.decorators import user_passes_test
 #brand CRUD
 
+def admin_required(user):
+    return user.is_authenticated and user.is_staff
+
+
 # brand list view
+@user_passes_test(admin_required)
 def brand_list(request):
     brands = Brand.objects.all().order_by('-id')
     context = {'brands': brands}
@@ -42,7 +47,7 @@ def brand_delete(request, brand_id):
     return redirect('brand_list')
 
 # Type CRUD
-
+@user_passes_test(admin_required)
 def type_list(request):
     types = Type.objects.all().order_by('-id')
     context = {'types': types}
@@ -82,7 +87,7 @@ def type_delete(request, type_id):
 
 
 # Product CRUD
-
+@user_passes_test(admin_required)
 def product_list(request):
     products = Product.objects.all().order_by('-id')
     return render(request, 'admin_panel/product/product/product_list.html', {'products': products})
@@ -120,6 +125,7 @@ def product_delete(request, product_id):
 
 
 # Product Variant CRUD
+@user_passes_test(admin_required)
 def product_variant_list(request):
     variants = ProductVariant.objects.all().order_by('-id')
     return render(request, 'admin_panel/product/variant/variant_list.html', {"variants": variants})
@@ -158,6 +164,7 @@ def product_variant_delete(request, variant_id):
     return redirect('product_variant_list')
 
 # Product Image CRUD
+@user_passes_test(admin_required)
 def product_image_list(request):
     images = ProductImage.objects.all().order_by('-id')
     context = {

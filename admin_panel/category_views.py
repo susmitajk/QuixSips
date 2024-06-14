@@ -4,8 +4,13 @@ from django.http import HttpResponseServerError
 from category.models import Category
 from .forms import CategoryForm
 from django.http import JsonResponse
+from django.contrib.auth.decorators import user_passes_test
+
+def admin_required(user):
+    return user.is_authenticated and user.is_staff
 
 # listing categories
+@user_passes_test(admin_required)
 def category_list(request):
     category = Category.available_objects.all().order_by('-id')
     context = {'category': category}

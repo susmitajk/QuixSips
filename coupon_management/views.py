@@ -3,9 +3,14 @@ from coupon_management.models import Coupon
 from admin_panel.forms import CouponForm
 from django.http import JsonResponse
 from django.utils import timezone
+from django.contrib.auth.decorators import user_passes_test
 
 # Create your views here.
+def admin_required(user):
+    return user.is_authenticated and user.is_staff
+
 #list coupon
+@user_passes_test(admin_required)
 def list_coupons(request):
     coupons = Coupon.objects.all().order_by('-id')
     current_time = timezone.now()

@@ -118,6 +118,7 @@ def DashboardView(request):
 
     return render(request, 'admin_panel/admin_dashboard.html', context)
 #======================================= Best selling ====================================== #
+@user_passes_test(admin_required)
 def best_selling(request):
     image_subquery = ProductImage.objects.filter(
         variant=OuterRef('pk')
@@ -175,6 +176,7 @@ def best_selling(request):
 
 #======================================= User Management =================================== #
 # To list Users
+@user_passes_test(admin_required)
 def user_list(request):
     user = Account.objects.all()
     context = {'user': user}
@@ -203,6 +205,7 @@ def deactivate_user(request, user_id):
 
 
 # listing Orders
+@user_passes_test(admin_required)
 def order_list(request):
     orders = Order.objects.all().order_by('-created_at')   # Retrieve all orders from the database
     context = {'orders': orders}

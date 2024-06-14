@@ -5,11 +5,15 @@ from store.models import Product
 from offers.models import ProductOffer,CategoryOffer,ReferralOffer
 from offers.forms import ProductOfferForm, CategoryOfferForm, ReferralOfferForm
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import user_passes_test
 
 # Create your views here.
 
-# ==================== Product Offer ========================== #
+def admin_required(user):
+    return user.is_authenticated and user.is_staff
 
+# ==================== Product Offer ========================== #
+@user_passes_test(admin_required)
 def product_offer_list(request):
     offers = ProductOffer.objects.all()
     return render(request, 'admin_panel/offers/product_offer_list.html', {'offers': offers})
@@ -45,7 +49,7 @@ def product_offer_delete(request, product_id):
 
 
 # ========================= Category Offer ===================== #
-
+@user_passes_test(admin_required)
 def category_offer_list(request):
     offers = CategoryOffer.objects.all()
     return render(request,'admin_panel/offers/category_offer_list.html', {'offers':offers})
